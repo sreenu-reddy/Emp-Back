@@ -1,0 +1,21 @@
+language: java
+dist: xenial
+jdk: openjdk11
+services: xvfb
+addons:
+  sonarcloud:
+    organization: "sreenu-reddy"
+    token:
+      secure: "WTFK6Uv860IeSLM9Z7/vTa2gEzWdLbHkIK1TqAXbwR7HtcP4yJXEZNsDOhXhmr2qpkQVYGWccNDj3y96IMee2MefGCRxWl9iL6GE70byph8o/lZ0AXCXtPNYYGm78SbwFk/pljtWWriiaK6U/Mhi769/VGjuzNJ6OFmvr00CacZvSg9ln2atOPY5Tuod5Ko3qaerVgBzaaDvmYdDfbKiIfadrr46W7lWuv0LpMkUPqYnTpYobW1F4wRJLuq97nKzfuQE4jC9BQrr5ahytdlmwSnvsEc3mBQBJwLiscT8NUlg4E5zbpLjZejHqyNxCRxaF/MjzQ0cRAMRhALz5LQD1uWo8VPs6OwzRaW9718YZCfrTddCdKXTiff9LZej7vYRsgRdj1QAOEUNeGD/I0sn6zQzEFJ1w0NqTAXNpM6TpCn66GmpR+SH15kDxmHa0IcU5FAnTYvNdLU4KV4SY/T0zWTHcXLpxqqXr0p0ZT0JVA84rCKO2Ka1ebcyjm5EsApbKivw9VOHjgElZWvZYhoutehGNChAR81glRyhgIFz1PNqtmWNEkT8qXPpPqI8AHUC/nILmaDMVjtum7h9fAxydErR0+XUeJ0UoyKCpO6Yk24/q4sFEFPmDOswwRZ8xQ8iyUatpGsie/xOc+UKAXJEFBoVSeMk/SULDePcG62NCak="
+after_success:
+- mvn clean test jacoco:report coveralls:repoprt
+install: true
+cache:
+  directories:
+    - "$HOME/.m2"
+    - "$HOME/.sonar/cache"
+script:
+- mvn clean install jacoco:report coveralls:report sonar:sonar -Dsonar.projectKey=sreenu-reddy_Emp-Back
+env:
+  global:
+    secure: "H0btN6CFMzZQ25KkFUzVbCK0f6Rq8HzAcUSLEHWRxKTsWYIq19rG97MhUlkxNOmMDuGiZPewVw/OxZwTYynCBV3vMQ2lRQXomByvEh+lN1lkVuSmjjJsOWeF/zNUAoaQAV+pmN1HBGY6TM7nLwMpVuMsXILc81RjAOuoNjY4zXxQZLr56BNcj2uffJjg6otftSz0rd+SBD0aaxpXqSRzfvJNoJ2aW+9L4tS101kY7q4BYGcASmAut5iirjB0k7gs0ow83F6gZoY7EExzpDO5fAqk6UIcFxxPsqTeD9kMfnbPZOwnPZFDvxxnOVSijB9TYkEyNoupUFonpcBaRFtVOAy38qdwmbU58Tzm5ci+WT1UkiWadTlmL72cKvZKjEKoEpj6BlzYFZB2F1NqJPKml0VlWqJS7DKaFHW2nPmp9KbhXBeHSTSON5qQwHv8YenYwW5lh9SkcURJzJLiGcwAxViNk8II2p71SO4Ngtzqr8qxxzpOhD5FXkozb+Xf8/DSS0R+Lj+XoewGa9jMJK6TkVh9lXGzhDYI68qaMfSzvgSGBHmjFTBEayvQFHfIWPx7AdS+JvkqBn0esnUxEWirT0td2u6Qz+a8+WypIjxX6d2i8/Qr7cido2dscnwJUT78HCxDU+/d9g+b5hApcwcZPH1kL1TWxitpA8CjGDYrd7c="
