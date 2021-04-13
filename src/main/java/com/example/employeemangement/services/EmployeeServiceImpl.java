@@ -7,7 +7,9 @@ import com.example.employeemangement.exception.EmployeeNotFoundException;
 import com.example.employeemangement.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -30,4 +32,14 @@ public class EmployeeServiceImpl implements EmployeeService {
          return employeeMapper.employeeToEmployeeDto(employee);
       }
     }
+
+    @Override
+    public List<EmployeeDto> getAllEmployees() {
+      List<Employee> employees = employeeRepository.findAll();
+       return employees.stream()
+                .map(employeeMapper::employeeToEmployeeDto)
+                .collect(Collectors.toList());
+    }
+
+
 }

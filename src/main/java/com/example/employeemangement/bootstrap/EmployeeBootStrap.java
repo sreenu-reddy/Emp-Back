@@ -18,7 +18,7 @@ public class EmployeeBootStrap implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args){
         Employee employee = new Employee();
         employee.setFirstName("Ram");
         employee.setLastName("AAA");

@@ -13,6 +13,8 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,10 +57,7 @@ class EmployeeServiceImplTest {
     @Test
     void getEmployeeById() {
 //        Given
-        Employee employee = new Employee();
-        employee.setId(EMP_ID);
-        employee.setFirstName(FIRST_NAME);
-        employee.setLastName(LAST_NAME);
+        Employee employee = getEmployee();
         given(employeeRepository.findById(employeeIdCaptor.capture())).willReturn(Optional.of(employee));
 
 //        When
@@ -75,4 +74,33 @@ class EmployeeServiceImplTest {
         then(employeeRepository).should().findById(employeeIdCaptor.getValue());
         then(employeeRepository).shouldHaveNoMoreInteractions();
     }
+
+    @Test
+    void getAllEmployees(){
+//        Given
+        List<Employee> employees = new ArrayList<>();
+
+        Employee employee = getEmployee();
+        employees.add(employee);
+
+        given(employeeRepository.findAll()).willReturn(employees);
+
+//        When
+      List<EmployeeDto> employeeDtoS=  employeeService.getAllEmployees();
+
+//      Then
+        assertNotNull(employeeDtoS);
+        assertEquals(1,employeeDtoS.size());
+        then(employeeRepository).should().findAll();
+        then(employeeRepository).shouldHaveNoMoreInteractions();
+    }
+
+//    Private Methods
+private Employee getEmployee() {
+    Employee employee = new Employee();
+    employee.setId(EMP_ID);
+    employee.setFirstName(FIRST_NAME);
+    employee.setLastName(LAST_NAME);
+    return employee;
+}
 }
