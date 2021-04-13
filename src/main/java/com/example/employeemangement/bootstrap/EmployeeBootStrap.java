@@ -38,7 +38,7 @@ public class EmployeeBootStrap implements CommandLineRunner {
         employeeRepository.save(employee1);
         employeeRepository.save(employee2);
 
-        System.out.println("Loaded Employees records: "+employeeRepository.count());
+        log.debug("Loaded Employees records: "+employeeRepository.count());
 
     }
 }

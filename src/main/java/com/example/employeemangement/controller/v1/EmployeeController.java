@@ -1,7 +1,6 @@
 package com.example.employeemangement.controller.v1;
 
 import com.example.employeemangement.api.v1.model.EmployeeDto;
-import com.example.employeemangement.exception.EmployeeNotFoundException;
 import com.example.employeemangement.services.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
