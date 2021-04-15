@@ -122,11 +122,35 @@ class EmployeeServiceImplTest {
         assertThrows(NullPointerException.class,()->employeeService.createNewEmployee(null));
     }
 
+    @Test
+    void UpdateEmployeeNullWillThrowsNullPointerExp(){
+        assertThrows(NullPointerException.class,()->employeeService.updateEmployee(EMP_ID,null));
+    }
+
+    @Test
+    void UpdateEmployee(){
+//        Given
+        Employee employee = getEmployee();
+        given(employeeRepository.save(employeeArgumentCaptor.capture())).willReturn(employee);
+
+//        When
+        EmployeeDto employeeDto = employeeService.updateEmployee(employee.getId(),getEmployeeDto());
+
+//        Then
+        assertNotNull(employeeDto);
+        assertEquals(employee.getId(),employeeDto.getId());
+        assertEquals(employee.getFirstName(),employeeDto.getFirstName());
+        assertEquals(employee.getEmailId(),employeeDto.getEmailId());
+        then(employeeRepository).should().save(employeeArgumentCaptor.getValue());
+        assertEquals(employee.getLastName(),employeeArgumentCaptor.getValue().getLastName());
+        then(employeeRepository).shouldHaveNoMoreInteractions();
+    }
 
 
 
 
-//    Private Methods
+
+    //    Private Methods
 private Employee getEmployee() {
     Employee employee = new Employee();
     employee.setId(EMP_ID);

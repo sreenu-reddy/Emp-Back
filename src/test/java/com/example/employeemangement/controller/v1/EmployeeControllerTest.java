@@ -176,6 +176,40 @@ class EmployeeControllerTest {
     }
 
 
+    @Test
+    void updateEmployee(){
+//        Given
+        EmployeeDto employeeDto = getEmployeeDto();
+        given(employeeService.updateEmployee(employeeIdCaptor.capture(),any(EmployeeDto.class))).willReturn(employeeDto);
+//        When
+        EmployeeDto employeeDto1 = controller.updateEmployee(EMP_ID,employeeDto);
+
+//        Then
+        assertNotNull(employeeDto1);
+        assertEquals(EMP_ID,employeeDto1.getId());
+        assertEquals(FIRST_NAME,employeeDto1.getFirstName());
+        assertEquals(LAST_NAME,employeeDto1.getLastName());
+        assertEquals(employeeDto1, employeeDto);
+        then(employeeService).should().updateEmployee(anyLong(),any(EmployeeDto.class));
+        assertEquals(EMP_ID,employeeIdCaptor.getValue());
+        then(employeeService).shouldHaveNoMoreInteractions();
+
+    }
+
+    @Test
+    void UpdateEmployeeStatus() throws Exception {
+//        Given
+        EmployeeDto employeeDto = getEmployeeDto();
+        given(employeeService.updateEmployee(anyLong(),any(EmployeeDto.class))).willReturn(employeeDto);
+
+//        Then
+        mockMvc.perform(put("/api/v1/employees/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(employeeDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.lastName",equalTo(LAST_NAME)));
+    }
+
 //    Private Methods
 private EmployeeDto getEmployeeDto() {
     EmployeeDto employeeDto = new EmployeeDto();

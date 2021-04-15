@@ -40,4 +40,10 @@ public class EmployeeController {
     public EmployeeDto createNewEmployee(@RequestBody EmployeeDto employeeDto){
         return employeeService.createNewEmployee(employeeDto);
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/employees/{id}")
+    public EmployeeDto updateEmployee(@PathVariable Long id,@RequestBody EmployeeDto employeeDto){
+        return employeeService.updateEmployee(id,employeeDto);
+    }
 }

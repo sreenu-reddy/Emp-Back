@@ -54,5 +54,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     }
 
+    @Override
+    public EmployeeDto updateEmployee(Long employeeId,EmployeeDto employeeDto) {
+        if (employeeDto ==null){
+            throw new NullPointerException("EmployeeDto is null:");
+        }else{
+            Employee detachedEmployee = employeeMapper.employeeDtoToEmployee(employeeDto);
+            detachedEmployee.setId(employeeId);
+            Employee savedEmployee = employeeRepository.save(detachedEmployee);
+            return employeeMapper.employeeToEmployeeDto(savedEmployee);
+        }
+    }
+
 
 }
