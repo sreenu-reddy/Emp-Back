@@ -19,9 +19,11 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.employeemangement.controller.v1.AbstractRestControllerTest.asJsonString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -137,6 +139,40 @@ class EmployeeControllerTest {
         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.employees",hasSize(SIZE)));
+    }
+
+
+    @Test
+    void createNewEmployee(){
+//        Given
+        EmployeeDto employeeDto = getEmployeeDto();
+        given(employeeService.createNewEmployee(any(EmployeeDto.class))).willReturn(employeeDto);
+//        When
+        EmployeeDto employeeDto1 = controller.createNewEmployee(getEmployeeDto());
+
+//        Then
+        assertNotNull(employeeDto1);
+        assertEquals(EMP_ID,employeeDto1.getId());
+        assertEquals(FIRST_NAME,employeeDto1.getFirstName());
+        assertEquals(LAST_NAME,employeeDto1.getLastName());
+        assertEquals(employeeDto1, employeeDto);
+        then(employeeService).should().createNewEmployee(any(EmployeeDto.class));
+        then(employeeService).shouldHaveNoMoreInteractions();
+
+    }
+
+    @Test
+    void createNewEmployeeStatus() throws Exception {
+//        Given
+        EmployeeDto employeeDto = getEmployeeDto();
+        given(employeeService.createNewEmployee(any(EmployeeDto.class))).willReturn(employeeDto);
+
+//        Then
+        mockMvc.perform(post("/api/v1/employees")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(employeeDto)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.lastName",equalTo(LAST_NAME)));
     }
 
 

@@ -37,6 +37,9 @@ class EmployeeServiceImplTest {
     @Captor
     ArgumentCaptor<Long> employeeIdCaptor;
 
+    @Captor
+    ArgumentCaptor<Employee> employeeArgumentCaptor;
+
 
     @BeforeEach
     void setUp() {
@@ -95,6 +98,34 @@ class EmployeeServiceImplTest {
         then(employeeRepository).shouldHaveNoMoreInteractions();
     }
 
+    @Test
+    void createNewEmployee(){
+//        Given
+        Employee employee = getEmployee();
+        given(employeeRepository.save(employeeArgumentCaptor.capture())).willReturn(employee);
+
+//        When
+        EmployeeDto employeeDto = employeeService.createNewEmployee(getEmployeeDto());
+
+//        Then
+        assertNotNull(employeeDto);
+        assertEquals(employee.getId(),employeeDto.getId());
+        assertEquals(employee.getFirstName(),employeeDto.getFirstName());
+        assertEquals(employee.getEmailId(),employeeDto.getEmailId());
+        then(employeeRepository).should().save(employeeArgumentCaptor.getValue());
+        assertEquals(employee.getLastName(),employeeArgumentCaptor.getValue().getLastName());
+        then(employeeRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    void createNewEmployeeNullWillThrowsNullPointerExp(){
+        assertThrows(NullPointerException.class,()->employeeService.createNewEmployee(null));
+    }
+
+
+
+
+
 //    Private Methods
 private Employee getEmployee() {
     Employee employee = new Employee();
@@ -103,4 +134,11 @@ private Employee getEmployee() {
     employee.setLastName(LAST_NAME);
     return employee;
 }
+    private EmployeeDto getEmployeeDto() {
+        EmployeeDto employee = new EmployeeDto();
+        employee.setId(EMP_ID);
+        employee.setFirstName(FIRST_NAME);
+        employee.setLastName(LAST_NAME);
+        return employee;
+    }
 }

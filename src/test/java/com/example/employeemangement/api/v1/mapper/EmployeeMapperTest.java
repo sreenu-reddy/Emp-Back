@@ -38,4 +38,58 @@ class EmployeeMapperTest {
         assertEquals(LAST_NAME,employeeDto.getLastName());
 
     }
+
+
+    @Test
+    void employeeToEmployeeDtoReturnsNull(){
+//        When
+        EmployeeDto employeeDto = employeeMapper.employeeToEmployeeDto(null);
+
+//        Then
+        assertNull(employeeDto);
+    }
+
+    @Test
+    void employeeToEmployeeDtoReturnsEmptyObj(){
+//        When
+        EmployeeDto  employeeDto = employeeMapper.employeeToEmployeeDto(new Employee());
+
+//        Then
+        assertNotNull(employeeDto);
+    }
+
+    @Test
+    void employeeDtoToEmployeeReturnsEmptyObj(){
+//        When
+        Employee employee = employeeMapper.employeeDtoToEmployee(new EmployeeDto());
+//        Then
+        assertNotNull(employee);
+    }
+
+    @Test
+    void employeeDtoToEmployeeReturnsNull(){
+//        When
+        Employee employee = employeeMapper.employeeDtoToEmployee(null);
+//        Then
+        assertNull(employee);
+    }
+
+    @Test
+    void employeeDtoToEmployee(){
+//        Given
+        EmployeeDto employeeDto = new EmployeeDto();
+        employeeDto.setId(EMP_ID);
+        employeeDto.setFirstName(FIRST_NAME);
+        employeeDto.setLastName(LAST_NAME);
+
+//        When
+        Employee employee = employeeMapper.employeeDtoToEmployee(employeeDto);
+//        Then
+        assertNotNull(employee);
+        assertEquals(EMP_ID,employee.getId());
+        assertEquals(FIRST_NAME,employee.getFirstName());
+        assertEquals(LAST_NAME,employee.getLastName());
+    }
+
+
 }

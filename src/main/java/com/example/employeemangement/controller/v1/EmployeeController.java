@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -34,5 +33,11 @@ public class EmployeeController {
     @GetMapping("/employees")
     public EmployeeListDto getAllEmployees(){
         return new EmployeeListDto(employeeService.getAllEmployees());
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/employees")
+    public EmployeeDto createNewEmployee(@RequestBody EmployeeDto employeeDto){
+        return employeeService.createNewEmployee(employeeDto);
     }
 }

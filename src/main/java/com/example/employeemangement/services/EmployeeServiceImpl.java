@@ -41,5 +41,18 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public EmployeeDto createNewEmployee(EmployeeDto employee) {
+        if (employee==null){
+            throw new NullPointerException("EmployeeDto is null:");
+
+        }else{
+            Employee detachedEmployee = employeeMapper.employeeDtoToEmployee(employee);
+            Employee savedEmployee = employeeRepository.save(detachedEmployee);
+            return employeeMapper.employeeToEmployeeDto(savedEmployee);
+        }
+
+    }
+
 
 }
