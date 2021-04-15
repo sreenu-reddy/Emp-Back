@@ -210,6 +210,13 @@ class EmployeeControllerTest {
                 .andExpect(jsonPath("$.lastName",equalTo(LAST_NAME)));
     }
 
+    @Test
+    void deleteEmployeeById() throws Exception {
+        mockMvc.perform(delete("/api/v1/employees/1")
+        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
 //    Private Methods
 private EmployeeDto getEmployeeDto() {
     EmployeeDto employeeDto = new EmployeeDto();

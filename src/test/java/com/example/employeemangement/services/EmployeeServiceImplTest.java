@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
@@ -50,7 +50,7 @@ class EmployeeServiceImplTest {
     @Test
     void getEmployeeByIdShouldThrowsEmployeeNotFoundExp(){
 //        Given
-        given(employeeRepository.findById(any())).willReturn(Optional.empty());
+        given(employeeRepository.findById(anyLong())).willReturn(Optional.empty());
 
 //        Then
         assertThrows(EmployeeNotFoundException.class,()->employeeService.getEmployeeById(EMP_ID));
@@ -146,6 +146,23 @@ class EmployeeServiceImplTest {
         then(employeeRepository).shouldHaveNoMoreInteractions();
     }
 
+    @Test
+    void deleteEmployeeByIdShouldThrowsEmployeeNotFoundExp(){
+
+//        Then
+        assertThrows(EmployeeNotFoundException.class,()->employeeService.deleteEmployeeById(EMP_ID));
+
+    }
+
+    @Test
+    void deleteEmployeeById(){
+        //        When
+        employeeRepository.deleteById(EMP_ID);
+
+//        Then
+          then(employeeRepository).should().deleteById(anyLong());
+          then(employeeRepository).shouldHaveNoMoreInteractions();
+    }
 
 
 

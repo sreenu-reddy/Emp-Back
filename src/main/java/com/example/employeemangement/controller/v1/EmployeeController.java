@@ -46,4 +46,9 @@ public class EmployeeController {
     public EmployeeDto updateEmployee(@PathVariable Long id,@RequestBody EmployeeDto employeeDto){
         return employeeService.updateEmployee(id,employeeDto);
     }
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/employees/{id}")
+    public void deleteEmployeeById(@PathVariable Long id){
+        employeeService.deleteEmployeeById(id);
+    }
 }
